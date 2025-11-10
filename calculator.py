@@ -1,0 +1,1 @@
+print(eval(input("Misolni kiriting\n")))
