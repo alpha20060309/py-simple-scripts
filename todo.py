@@ -20,17 +20,17 @@ def save_tasks(tasks):
 def get_next_id(tasks):
     if not tasks:
         return 1
-    return max(tasks['id'] for task in tasks) + 1
+    return max(task['id'] for task in tasks) + 1
 
 def add_task(title, description=None, due=None,status="not started"):
     tasks = load_tasks()
-    task_id = get_next_id()
+    task_id = get_next_id(tasks)
     task = {
         "id" : task_id,
         "title" : title,
         "description" : description or "",
         "status" : status,
-        "created_at" : datetime.now.strftime("%Y-%m-%d %H:%M:%S"),
+        "created_at" : datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         "due_date": due
     }
     tasks.append(task)
@@ -65,7 +65,7 @@ def mark_done(task_id):
             save_tasks(tasks)
             print(f"Task {task_id} is marked as completed.")
             return
-        print(f"Task {task_id} is not found")
+    print(f"Task {task_id} is not found")
 
 def edit_task(task_id, title=None, description=None,due=None):
     tasks = load_tasks()
@@ -77,7 +77,7 @@ def edit_task(task_id, title=None, description=None,due=None):
             save_tasks(tasks)
             print(f"Task {task_id} updated sucessfully.")
             return
-        print(f"Task {task_id} is not found.")
+    print(f"Task {task_id} is not found.")
 
 def delete_task(task_id,force=False):
     tasks = load_tasks()
@@ -89,11 +89,11 @@ def delete_task(task_id,force=False):
                 if confirm.lower() != "y":
                     print("Deletion cancelled.")
                     return
-                tasks.remove(t)
-                save_tasks(tasks)
-                print(f"Task {task_id} deleted.")
-                return
-        print(f"Task {task_id} is not found")
+            tasks.remove(t)
+            save_tasks(tasks)
+            print(f"Task {task_id} deleted.")
+            return
+    print(f"Task {task_id} is not found")
 
 def search_tasks(keyword):
     tasks = load_tasks()
